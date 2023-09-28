@@ -2,9 +2,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using StaffingPortalBackend.Models;
 using StaffingPortalBackend.DTO;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace StaffingPortalBackend.Controllers
 {
@@ -33,16 +30,15 @@ namespace StaffingPortalBackend.Controllers
                 DivisionManager = p.DivisionManager,
                 ResourceManager = p.ResourceManager,
                 AvailableFrom = p.AvailableFrom,
-                Comments = p.Comments
-                // Установите другие свойства
+                Comments = p.Comments                
             }).ToList();
             return peopleDtos;
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Person>> GetPerson(int id)  // Изменено с Project на Person
+        public async Task<ActionResult<Person>> GetPerson(int id)
         {
-            var person = await _context.People.FindAsync(id);  // Изменено с Projects на People
+            var person = await _context.People.FindAsync(id);
 
             if (person == null)
             {
@@ -64,7 +60,6 @@ namespace StaffingPortalBackend.Controllers
                 ResourceManager = personCreateDto.TalentManager,
                 AvailableFrom = personCreateDto.AvailableFrom,
                 Comments = personCreateDto.Comments
-                // Заполните другие свойства
             };
             _context.People.Add(person);
             await _context.SaveChangesAsync();
@@ -102,11 +97,9 @@ namespace StaffingPortalBackend.Controllers
             existingPerson.ResourceManager = personUpdateDto.ResourceManager;
             existingPerson.AvailableFrom = personUpdateDto.AvailableFrom;
             existingPerson.Comments = personUpdateDto.Comments;
-
-            // Если вы хотите обновлять связанные сущности
+            
             if (personUpdateDto.ProjectCandidateIds != null)
-            {
-                // Удалите существующие связи и добавьте новые
+            {                
                 _context.ProjectCandidates.RemoveRange(existingPerson.ProjectCandidates);
                 foreach (var projectId in personUpdateDto.ProjectCandidateIds)
                 {

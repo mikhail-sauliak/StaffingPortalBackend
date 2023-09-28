@@ -1,6 +1,5 @@
 namespace StaffingPortalBackend.DTO
 {
-    // Добавьте другие свойства, которые вы хотите включить
     public class PersonReadDto
     {
         public int Id { get; set; }
@@ -11,7 +10,6 @@ namespace StaffingPortalBackend.DTO
         public string ResourceManager { get; set; }
         public DateTime AvailableFrom { get; set; }
         public string Comments { get; set; }
-        // Добавьте другие свойства, которые вы хотите включить
     }
         
 }

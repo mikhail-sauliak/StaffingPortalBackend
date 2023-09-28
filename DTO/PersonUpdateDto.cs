@@ -11,6 +11,6 @@ namespace StaffingPortalBackend.DTO
         public string ResourceManager { get; set; }
         public DateTime AvailableFrom { get; set; }
         public string Comments { get; set; }
-        public ICollection<int> ProjectCandidateIds { get; set; } // Если вы хотите обновлять связанные сущности
+        public ICollection<int> ProjectCandidateIds { get; set; }
     }
 }

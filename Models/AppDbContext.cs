@@ -27,6 +27,6 @@ namespace StaffingPortalBackend.Models
         
         public DbSet<Project> Projects { get; set; }
         public DbSet<Person> People { get; set; }
-        public DbSet<ProjectCandidate> ProjectCandidates { get; set; } // Добавьте эту строку
+        public DbSet<ProjectCandidate> ProjectCandidates { get; set; }
     }
 }

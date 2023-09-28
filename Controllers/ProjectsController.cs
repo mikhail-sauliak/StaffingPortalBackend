@@ -2,9 +2,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using StaffingPortalBackend.Models;
 using StaffingPortalBackend.DTO;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace StaffingPortalBackend.Controllers
 {
@@ -24,7 +21,7 @@ namespace StaffingPortalBackend.Controllers
         {
             var project = await _context.Projects
                 .Include(p => p.ProjectCandidates)
-                .ThenInclude(pc => pc.Person) // Включает информацию о кандидатах
+                .ThenInclude(pc => pc.Person)
                 .FirstOrDefaultAsync(p => p.Id == id);
 
             if (project == null)
@@ -56,8 +53,7 @@ namespace StaffingPortalBackend.Controllers
                     Id = pc.PersonId,
                     FirstName = pc.Person.FirstName,
                     LastName = pc.Person.LastName,
-                    Location = pc.Person.Location
-                    // Заполните другие свойства
+                    Location = pc.Person.Location                    
                 }).ToList()
             }).ToList();
 
@@ -73,20 +69,18 @@ namespace StaffingPortalBackend.Controllers
                 TechStack = projectCreateDto.TechStack,
                 StartDate = projectCreateDto.StartDate,
                 EndDate = projectCreateDto.EndDate,
-                Comments = projectCreateDto.Comments
-                // Заполните другие свойства
+                Comments = projectCreateDto.Comments               
             };
             
-            _context.Projects.Add(project);
+            _context.Projects.Add(project);            
             
-            // Если CandidateIds предоставлены, создайте связи между проектом и кандидатами
             if(projectCreateDto.CandidateIds != null && projectCreateDto.CandidateIds.Any())
             {
                 foreach(var candidateId in projectCreateDto.CandidateIds)
                 {
                     var projectCandidate = new ProjectCandidate
                     {
-                        Project = project, // Установите связь с только что созданным проектом
+                        Project = project,
                         PersonId = candidateId
                     };
                     _context.ProjectCandidates.Add(projectCandidate);
@@ -109,7 +103,7 @@ namespace StaffingPortalBackend.Controllers
                     FirstName = pc.Person.FirstName,
                     LastName = pc.Person.LastName,
                     Location = pc.Person.Location
-                    // Заполните другие свойства
+                    // add other fields
                 }).ToList()?? new List<PersonReadDto>()
             };
             
@@ -128,17 +122,17 @@ namespace StaffingPortalBackend.Controllers
                 return NotFound();
             }
 
-            // Обновление основной информации проекта
+            // refresh the state of the project
             existingProject.Name = projectUpdateDto.Name;
             existingProject.TechStack = projectUpdateDto.TechStack;
             existingProject.StartDate = projectUpdateDto.StartDate;
             existingProject.EndDate = projectUpdateDto.EndDate;
             existingProject.Comments = projectUpdateDto.Comments;
 
-            // Обновление связанных кандидатов
-            _context.ProjectCandidates.RemoveRange(existingProject.ProjectCandidates); // Удаление существующих связей
+            // update connected candidates
+            _context.ProjectCandidates.RemoveRange(existingProject.ProjectCandidates); // remove current connections
             
-            if(projectUpdateDto.CandidateIds != null) // Убедитесь, что CandidateIds не null
+            if(projectUpdateDto.CandidateIds != null)
             {
                 foreach (var candidateId in projectUpdateDto.CandidateIds)
                 {
@@ -147,7 +141,7 @@ namespace StaffingPortalBackend.Controllers
                         ProjectId = id,
                         PersonId = candidateId
                     };
-                    _context.ProjectCandidates.Add(projectCandidate); // Добавление новых связей
+                    _context.ProjectCandidates.Add(projectCandidate);
                 }
             }
 
