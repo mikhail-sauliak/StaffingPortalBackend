@@ -30,7 +30,8 @@ namespace StaffingPortalBackend.Controllers
                 DivisionManager = p.DivisionManager,
                 ResourceManager = p.ResourceManager,
                 AvailableFrom = p.AvailableFrom,
-                Comments = p.Comments                
+                TechStack = p.TechStack,
+                Comments = p.Comments                              
             }).ToList();
             return peopleDtos;
         }
@@ -59,7 +60,8 @@ namespace StaffingPortalBackend.Controllers
                 DivisionManager = personCreateDto.DivisionManager,
                 ResourceManager = personCreateDto.TalentManager,
                 AvailableFrom = personCreateDto.AvailableFrom,
-                Comments = personCreateDto.Comments
+                Comments = personCreateDto.Comments,
+                TechStack = personCreateDto.TechStack
             };
             _context.People.Add(person);
             await _context.SaveChangesAsync();
@@ -73,7 +75,8 @@ namespace StaffingPortalBackend.Controllers
                 DivisionManager = person.DivisionManager,
                 ResourceManager = person.ResourceManager,
                 AvailableFrom = person.AvailableFrom,
-                Comments = person.Comments
+                Comments = person.Comments,
+                TechStack = personCreateDto.TechStack
             };
             return CreatedAtAction(nameof(GetPerson), new { id = person.Id }, personReadDto);
         }
@@ -97,6 +100,7 @@ namespace StaffingPortalBackend.Controllers
             existingPerson.ResourceManager = personUpdateDto.ResourceManager;
             existingPerson.AvailableFrom = personUpdateDto.AvailableFrom;
             existingPerson.Comments = personUpdateDto.Comments;
+            existingPerson.TechStack = personUpdateDto.TechStack;
             
             if (personUpdateDto.ProjectCandidateIds != null)
             {                

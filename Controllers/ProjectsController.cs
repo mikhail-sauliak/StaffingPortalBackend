@@ -17,7 +17,7 @@ namespace StaffingPortalBackend.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Project>> GetProject(int id)
+        public async Task<ActionResult<ProjectReadDto>> GetProject(int id)
         {
             var project = await _context.Projects
                 .Include(p => p.ProjectCandidates)
@@ -29,7 +29,24 @@ namespace StaffingPortalBackend.Controllers
                 return NotFound();
             }
 
-            return project;
+            var projectReadDto = new ProjectReadDto
+            {
+                Id = project.Id,
+                Name = project.Name,
+                TechStack = project.TechStack,
+                StartDate = project.StartDate,
+                EndDate = project.EndDate,
+                Comments = project.Comments,
+                Candidates = project.ProjectCandidates.Select(pc => new PersonReadDto
+                {
+                    Id = pc.Person.Id,
+                    FirstName = pc.Person.FirstName,
+                    LastName = pc.Person.LastName,
+                    // ... other fields
+                }).ToList()
+            };
+
+            return projectReadDto;
         }
 
         [HttpGet]
