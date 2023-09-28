@@ -1,6 +1,4 @@
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using StaffingPortalBackend.Models;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -36,5 +34,13 @@ app.UseCors("AllowMyOrigin");
 app.UseAuthorization();
 
 app.MapControllers();
+
+// Initialize the database
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    var context = services.GetRequiredService<AppDbContext>();
+    DbInitializer.Initialize(context);
+}
 
 app.Run();
