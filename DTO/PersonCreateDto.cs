@@ -8,6 +8,7 @@ namespace StaffingPortalBackend.DTO
         public string DivisionManager { get; set; }
         public string TalentManager { get; set; }
         public DateTime AvailableFrom { get; set; }
+        public string TechStack { get; set; }
         public string Comments { get; set; }
     }
 }
