@@ -15,8 +15,7 @@ namespace StaffingPortalBackend.Controllers
         {
             _context = context;
         }
-
-        [HttpGet]
+        
         [HttpGet]
         public async Task<ActionResult<IEnumerable<PersonReadDto>>> GetPersons()
         {
@@ -31,7 +30,12 @@ namespace StaffingPortalBackend.Controllers
                 ResourceManager = p.ResourceManager,
                 AvailableFrom = p.AvailableFrom,
                 TechStack = p.TechStack,
-                Comments = p.Comments                              
+                Comments = p.Comments,
+                Stream = p.Stream,
+                TMAware = p.TMAware,
+                PlannedAssignment = p.PlannedAssignment, // will be set up separately using frontend logic and then passed to the db
+                Level = p.Level,
+                AssignmentExistsInGCP = p.AssignmentExistsInGCP
             }).ToList();
             return peopleDtos;
         }
@@ -61,7 +65,11 @@ namespace StaffingPortalBackend.Controllers
                 ResourceManager = personCreateDto.TalentManager,
                 AvailableFrom = personCreateDto.AvailableFrom,
                 Comments = personCreateDto.Comments,
-                TechStack = personCreateDto.TechStack
+                TechStack = personCreateDto.TechStack,
+                Stream = personCreateDto.Stream,
+                TMAware = personCreateDto.TMAware,
+                Level = personCreateDto.Level,
+                AssignmentExistsInGCP = personCreateDto.AssignmentExistsInGCP
             };
             _context.People.Add(person);
             await _context.SaveChangesAsync();
@@ -76,7 +84,12 @@ namespace StaffingPortalBackend.Controllers
                 ResourceManager = person.ResourceManager,
                 AvailableFrom = person.AvailableFrom,
                 Comments = person.Comments,
-                TechStack = personCreateDto.TechStack
+                TechStack = personCreateDto.TechStack,
+                Stream = person.Stream,
+                TMAware = person.TMAware,
+                PlannedAssignment = person.PlannedAssignment, // this field will be set up separately
+                Level = person.Level,
+                AssignmentExistsInGCP = person.AssignmentExistsInGCP
             };
             return CreatedAtAction(nameof(GetPerson), new { id = person.Id }, personReadDto);
         }
@@ -101,6 +114,10 @@ namespace StaffingPortalBackend.Controllers
             existingPerson.AvailableFrom = personUpdateDto.AvailableFrom;
             existingPerson.Comments = personUpdateDto.Comments;
             existingPerson.TechStack = personUpdateDto.TechStack;
+            existingPerson.Stream = personUpdateDto.Stream;
+            existingPerson.TMAware = personUpdateDto.TMAware;
+            existingPerson.Level = personUpdateDto.Level;
+            existingPerson.AssignmentExistsInGCP = personUpdateDto.AssignmentExistsInGCP;
             
             if (personUpdateDto.ProjectCandidateIds != null)
             {                

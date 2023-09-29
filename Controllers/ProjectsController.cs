@@ -2,6 +2,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using StaffingPortalBackend.Models;
 using StaffingPortalBackend.DTO;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace StaffingPortalBackend.Controllers
 {
@@ -37,6 +40,15 @@ namespace StaffingPortalBackend.Controllers
                 StartDate = project.StartDate,
                 EndDate = project.EndDate,
                 Comments = project.Comments,
+                Search = project.Search,
+                Signed = project.Signed,
+                PositionSigned = project.PositionSigned,
+                PositionClosed = project.PositionClosed,
+                Location = project.Location,
+                Stream = project.Stream,
+                Level = project.Level,
+                Priority = project.Priority,
+                Attachment = project.Attachment,
                 Candidates = project.ProjectCandidates.Select(pc => new PersonReadDto
                 {
                     Id = pc.Person.Id,
@@ -65,12 +77,22 @@ namespace StaffingPortalBackend.Controllers
                 StartDate = p.StartDate,
                 EndDate = p.EndDate,
                 Comments = p.Comments,
+                Search = p.Search,
+                Signed = p.Signed,
+                PositionSigned = p.PositionSigned,
+                PositionClosed = p.PositionClosed,
+                Location = p.Location,
+                Stream = p.Stream,
+                Level = p.Level,
+                Priority = p.Priority,
+                Attachment = p.Attachment,
                 Candidates = p.ProjectCandidates.Select(pc => new PersonReadDto
                 {
                     Id = pc.PersonId,
                     FirstName = pc.Person.FirstName,
                     LastName = pc.Person.LastName,
-                    Location = pc.Person.Location                    
+                    Location = pc.Person.Location
+                    // add other fields
                 }).ToList()
             }).ToList();
 
@@ -78,22 +100,35 @@ namespace StaffingPortalBackend.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<ProjectReadDto>> CreateProject(ProjectCreateDto projectCreateDto)
+        public async Task<ActionResult<ProjectReadDto>> CreateProject([FromForm] ProjectCreateDto projectCreateDto)
         {
+            if (projectCreateDto == null)
+            {
+                return BadRequest("Project data must not be null");
+            }
             var project = new Project
             {
                 Name = projectCreateDto.Name,
                 TechStack = projectCreateDto.TechStack,
                 StartDate = projectCreateDto.StartDate,
                 EndDate = projectCreateDto.EndDate,
-                Comments = projectCreateDto.Comments               
+                Comments = projectCreateDto.Comments,
+                Search = projectCreateDto.Search,
+                Signed = projectCreateDto.Signed,
+                PositionSigned = projectCreateDto.PositionSigned,
+                PositionClosed = projectCreateDto.PositionClosed,
+                Location = projectCreateDto.Location,
+                Stream = projectCreateDto.Stream,
+                Level = projectCreateDto.Level,
+                Priority = projectCreateDto.Priority,
+                Attachment = projectCreateDto.Attachment
             };
-            
-            _context.Projects.Add(project);            
-            
-            if(projectCreateDto.CandidateIds != null && projectCreateDto.CandidateIds.Any())
+
+            _context.Projects.Add(project);
+
+            if (projectCreateDto.CandidateIds != null && projectCreateDto.CandidateIds.Any())
             {
-                foreach(var candidateId in projectCreateDto.CandidateIds)
+                foreach (var candidateId in projectCreateDto.CandidateIds)
                 {
                     var projectCandidate = new ProjectCandidate
                     {
@@ -103,8 +138,15 @@ namespace StaffingPortalBackend.Controllers
                     _context.ProjectCandidates.Add(projectCandidate);
                 }
             }
-            
-            await _context.SaveChangesAsync();
+
+             try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
 
             var projectReadDto = new ProjectReadDto
             {
@@ -114,6 +156,15 @@ namespace StaffingPortalBackend.Controllers
                 StartDate = project.StartDate,
                 EndDate = project.EndDate,
                 Comments = project.Comments,
+                Search = project.Search,
+                Signed = project.Signed,
+                PositionSigned = project.PositionSigned,
+                PositionClosed = project.PositionClosed,
+                Location = project.Location,
+                Stream = project.Stream,
+                Level = project.Level,
+                Priority = project.Priority,
+                Attachment = project.Attachment,
                 Candidates = project.ProjectCandidates?.Select(pc => new PersonReadDto
                 {
                     Id = pc.PersonId,
@@ -121,35 +172,47 @@ namespace StaffingPortalBackend.Controllers
                     LastName = pc.Person.LastName,
                     Location = pc.Person.Location
                     // add other fields
-                }).ToList()?? new List<PersonReadDto>()
+                }).ToList() ?? new List<PersonReadDto>()
             };
-            
+
             return CreatedAtAction(nameof(GetProject), new { id = project.Id }, projectReadDto);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateProject(int id, ProjectUpdateDto projectUpdateDto)
+        public async Task<IActionResult> UpdateProject(int id, [FromForm] ProjectUpdateDto projectUpdateDto)
         {
+            if (projectUpdateDto == null)
+            {
+                return BadRequest("Project data must not be null");
+            }
+
             var existingProject = await _context.Projects
                 .Include(p => p.ProjectCandidates)
                 .FirstOrDefaultAsync(p => p.Id == id);
 
             if (existingProject == null)
             {
-                return NotFound();
+                return NotFound("Project not found");
             }
 
-            // refresh the state of the project
             existingProject.Name = projectUpdateDto.Name;
             existingProject.TechStack = projectUpdateDto.TechStack;
             existingProject.StartDate = projectUpdateDto.StartDate;
             existingProject.EndDate = projectUpdateDto.EndDate;
             existingProject.Comments = projectUpdateDto.Comments;
+            existingProject.Search = projectUpdateDto.Search;
+            existingProject.Signed = projectUpdateDto.Signed;
+            existingProject.PositionSigned = projectUpdateDto.PositionSigned;
+            existingProject.PositionClosed = projectUpdateDto.PositionClosed;
+            existingProject.Location = projectUpdateDto.Location;
+            existingProject.Stream = projectUpdateDto.Stream;
+            existingProject.Level = projectUpdateDto.Level;
+            existingProject.Priority = projectUpdateDto.Priority;
+            existingProject.Attachment = projectUpdateDto.Attachment;
 
-            // update connected candidates
-            _context.ProjectCandidates.RemoveRange(existingProject.ProjectCandidates); // remove current connections
-            
-            if(projectUpdateDto.CandidateIds != null)
+            _context.ProjectCandidates.RemoveRange(existingProject.ProjectCandidates);
+
+            if (projectUpdateDto.CandidateIds != null)
             {
                 foreach (var candidateId in projectUpdateDto.CandidateIds)
                 {
@@ -162,7 +225,14 @@ namespace StaffingPortalBackend.Controllers
                 }
             }
 
-            await _context.SaveChangesAsync();
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
 
             return NoContent();
         }
@@ -174,13 +244,21 @@ namespace StaffingPortalBackend.Controllers
 
             if (project == null)
             {
-                return NotFound();
+                return NotFound("Project not found");
             }
 
             _context.Projects.Remove(project);
-            await _context.SaveChangesAsync();
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
 
             return NoContent();
-        }
+        }    
     }
 }
