@@ -11,6 +11,11 @@ namespace StaffingPortalBackend.DTO
         public DateTime AvailableFrom { get; set; }
         public string TechStack { get; set; }
         public string Comments { get; set; }
+        public string Stream { get; set; }
+        public string TMAware { get; set; }
+        public string PlannedAssignment { get; set; }
+        public string Level { get; set; }
+        public bool AssignmentExistsInGCP { get; set; }
     }
         
 }
