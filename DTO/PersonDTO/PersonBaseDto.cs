@@ -1,0 +1,53 @@
+using System.ComponentModel.DataAnnotations;
+
+namespace StaffingPortalBackend.DTO
+{
+    public class PersonBaseDto
+    {
+        [Required]
+        [MaxLength(100)]
+        public string FirstName { get; set; }
+
+        [Required]
+        [MaxLength(100)]
+        public string LastName { get; set; }
+
+        [Required]
+        [MaxLength(100)]
+        public string Location { get; set; }
+
+        [Required]
+        [MaxLength(4)]
+        public int? DivisionManagerId { get; set; }
+
+        [Required]
+        [MaxLength(4)]
+        public int? TalentManagerId { get; set; }
+
+        [Required]
+        public DateTimeOffset AvailableFrom { get; set; }
+
+        [Required]
+        [MaxLength(100)]
+        public string TechStack { get; set; }
+
+        [MaxLength(1000)]
+        public string? Comments { get; set; }
+
+        [Required]
+        [MaxLength(4)]
+        public string Stream { get; set; }
+
+        [Required]
+        [MaxLength(10)]
+        public string TMAware { get; set; }
+
+        [Required]
+        [MaxLength(20)]
+        public string Level { get; set; }
+
+        [Required]
+        public bool AssignmentExistsInGCP { get; set; }
+        public int? UserId { get; set; }
+    }
+}
