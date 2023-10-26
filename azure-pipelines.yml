@@ -33,3 +33,12 @@ steps:
     command: 'publish'
     publishWebProjects: true
     arguments: '-o $(System.DefaultWorkingDirectory)\publish'
+
+- task: AzureRmWebAppDeployment@4
+  inputs:
+    ConnectionType: 'AzureRM'
+    azureSubscription: 'Azure subscription 1(e4861d0a-8abf-4732-9d14-53435d54dcf6)'
+    appType: 'webAppLinux'
+    WebAppName: 'staffportalbackend'
+    packageForLinux: '$(System.DefaultWorkingDirectory)/publish/*.zip'
+    RuntimeStack: 'DOTNETCORE|6.0'
