@@ -30,6 +30,11 @@ steps:
 
 - task: DotNetCoreCLI@2
   inputs:
+    command: 'custom'
+    custom: 'dotnet ef database update'
+
+- task: DotNetCoreCLI@2
+  inputs:
     command: 'publish'
     publishWebProjects: true
     arguments: '-o $(System.DefaultWorkingDirectory)\publish'
