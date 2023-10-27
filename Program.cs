@@ -27,8 +27,8 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"))
-               .EnableSensitiveDataLogging(true) // Включает логгирование
-               .UseLoggerFactory(LoggerFactory.Create(builder => builder.AddConsole()))); // Выводит логи в консоль
+               .EnableSensitiveDataLogging(true)
+               .UseLoggerFactory(LoggerFactory.Create(builder => builder.AddConsole())));
 
 builder.Services.AddAutoMapper(typeof(MappingProfile).Assembly);
 builder.Services.AddScoped<IUserService, UserService>();
@@ -71,7 +71,7 @@ using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
     var context = services.GetRequiredService<AppDbContext>();
-    DbInitializer.Initialize(context);
+    // DbInitializer.Initialize(context);
 }
 
 app.Run();
