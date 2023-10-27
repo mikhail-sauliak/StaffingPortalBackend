@@ -31,7 +31,7 @@ steps:
 - task: DotNetCoreCLI@2
   inputs:
     command: 'custom'
-    custom: 'dotnet ef database update'
+    custom: 'ef database update'
 
 - task: DotNetCoreCLI@2
   inputs:
