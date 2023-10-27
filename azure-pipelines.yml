@@ -41,6 +41,14 @@ steps:
     TargetFolder: '$(System.DefaultWorkingDirectory)\publish'
     OverWrite: true
 
+- task: ArchiveFiles@2
+  inputs:
+    rootFolderOrFile: '$(System.DefaultWorkingDirectory)\publish\staffdb.db'
+    includeRootFolder: true
+    archiveType: 'zip'
+    archiveFile: '$(System.DefaultWorkingDirectory)\publish\s.zip'
+    replaceExistingArchive: false
+
 - task: AzureRmWebAppDeployment@4
   inputs:
     ConnectionType: 'AzureRM'
