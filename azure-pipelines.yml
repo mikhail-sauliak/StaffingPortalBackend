@@ -39,6 +39,7 @@ steps:
     SourceFolder: '$(System.DefaultWorkingDirectory)'
     Contents: 'staffdb.db'
     TargetFolder: '$(System.DefaultWorkingDirectory)\publish'
+    OverWrite: true
 
 - task: AzureRmWebAppDeployment@4
   inputs:
