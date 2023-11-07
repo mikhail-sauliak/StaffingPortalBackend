@@ -21,7 +21,8 @@ namespace StaffingPortalBackend.Services
             var reviews = await _context.SalaryReviews.ToListAsync();
             if (isTalentManager)
             {
-                reviews = reviews.Select(r => {
+                reviews = reviews.Select(r =>
+                {
                     r.OldSalary = 0;
                     r.ProposedSalary = 0;
                     return r;

@@ -46,7 +46,7 @@ namespace StaffingPortalBackend.Controllers
                 throw;
             }
         }
-        
+
         private string GenerateJwtToken(User user)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
@@ -57,7 +57,7 @@ namespace StaffingPortalBackend.Controllers
                 new Claim(ClaimTypes.Name, user.Id.ToString()),
                 new Claim(ClaimTypes.Role, user.Role),
                 new Claim("Stream", user.Stream)
-            };            
+            };
 
             var tokenDescriptor = new SecurityTokenDescriptor
             {

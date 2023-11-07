@@ -20,7 +20,7 @@ namespace StaffingPortalBackend.Controllers
 
         public SalaryReviewController(
             ISalaryReviewService salaryReviewService,
-            ISalaryReviewHistoryService salaryReviewHistoryService, 
+            ISalaryReviewHistoryService salaryReviewHistoryService,
             IMapper mapper,
             AuthorizationHelper authorizationHelper)
         {
@@ -33,7 +33,7 @@ namespace StaffingPortalBackend.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<SalaryReviewReadDto>>> GetAllSalaryReviews()
         {
-            var isTalentManager = User.FindFirst(ClaimTypes.Role)?.Value == "TalentManager";            
+            var isTalentManager = User.FindFirst(ClaimTypes.Role)?.Value == "TalentManager";
             var userId = int.Parse(User.FindFirst(ClaimTypes.Name)?.Value ?? "0");
             var userRole = User.FindFirst(ClaimTypes.Role)?.Value;
             var userStream = User.FindFirst("Stream")?.Value;
@@ -68,7 +68,7 @@ namespace StaffingPortalBackend.Controllers
             var userId = int.Parse(User.FindFirst(ClaimTypes.Name)?.Value ?? "0");
             var userRole = User.FindFirst(ClaimTypes.Role)?.Value;
             var userStream = User.FindFirst("Stream")?.Value;
-            
+
             var currentUser = new User
             {
                 Id = userId,
@@ -86,7 +86,7 @@ namespace StaffingPortalBackend.Controllers
 
             if (!_authorizationHelper.CanUserAccessData(currentUser, salaryReview.PersonId))
                 return Forbid();
-            
+
             return Ok(_mapper.Map<SalaryReviewReadDto>(salaryReview));
         }
 

@@ -36,6 +36,7 @@ builder.Services.AddScoped<ISalaryReviewService, SalaryReviewService>();
 builder.Services.AddScoped<ISalaryReviewHistoryService, SalaryReviewHistoryService>();
 builder.Services.AddScoped<ISalaryReviewRequestService, SalaryReviewRequestService>();
 builder.Services.AddScoped<IPersonService, PersonService>();
+builder.Services.AddScoped<IAdministrationService, AdministrationService>();
 builder.Services.AddScoped<AuthorizationHelper>();
 
 builder.Services.AddCors(options =>

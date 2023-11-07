@@ -141,7 +141,7 @@ namespace StaffingPortalBackend.Controllers
                 }
             }
 
-             try
+            try
             {
                 await _context.SaveChangesAsync();
             }
@@ -262,6 +262,6 @@ namespace StaffingPortalBackend.Controllers
             }
 
             return NoContent();
-        }    
+        }
     }
 }

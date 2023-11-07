@@ -20,7 +20,7 @@ namespace StaffingPortalBackend.Controllers
             _personService = personService;
             _mapper = mapper;
         }
-        
+
         [HttpGet]
         public async Task<ActionResult<IEnumerable<PersonReadDto>>> GetPersons()
         {
@@ -128,5 +128,5 @@ namespace StaffingPortalBackend.Controllers
                 return StatusCode(500, "Internal server error");
             }
         }
-    }    
+    }
 }

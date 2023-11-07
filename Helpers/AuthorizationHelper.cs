@@ -1,5 +1,5 @@
 using StaffingPortalBackend.Models;
-using System.Linq;
+using System.Security.Claims;
 
 public class AuthorizationHelper
 {
@@ -27,7 +27,7 @@ public class AuthorizationHelper
 
     private bool IsUserInDivisionManagerPool(User divisionManager, int targetUserId)
     {
-       var targetUser = _context.People.FirstOrDefault(p => p.Id == targetUserId);
+        var targetUser = _context.People.FirstOrDefault(p => p.Id == targetUserId);
         var access = targetUser != null && targetUser.DivisionManagerId == divisionManager.Id;
         Console.WriteLine($"Division Manager {divisionManager.Id} access to User {targetUserId}: {access}");
         return access;
@@ -44,5 +44,14 @@ public class AuthorizationHelper
     public bool CanUserAccessSalaryReviewPage(User currentUser)
     {
         return currentUser.Role == "Head" || currentUser.Role == "DeputyHead" || currentUser.Role == "DivisionManager";
+    }
+
+    public bool IsAuthorizedForAdminOperations(ClaimsPrincipal user)
+    {
+        var userRoles = user.Claims
+            .Where(c => c.Type == ClaimTypes.Role)
+            .Select(c => c.Value);
+
+        return userRoles.Any(role => role == "Head" || role == "DeputyHead" || role == "DivisionManager");
     }
 }

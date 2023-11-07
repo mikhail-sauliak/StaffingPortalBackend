@@ -26,7 +26,7 @@ namespace StaffingPortalBackend.Models
         public DateTimeOffset? SalaryReceivedDate { get; set; }
         public string DivisionManagerComments { get; set; }
         public string TalentManagerComments { get; set; }
-        public string ReviewResult { get; set; } 
+        public string ReviewResult { get; set; }
         public bool ApprovedByDM { get; set; }
     }
 }

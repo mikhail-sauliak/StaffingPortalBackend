@@ -45,7 +45,7 @@ namespace StaffingPortalBackend.Services
 
             switch (user.Role)
             {
-                case "DivisionManager" :
+                case "DivisionManager":
                     query = query.Where(r => r.Person.DivisionManagerId == userId);
                     break;
                 case "DeputyHead":
@@ -149,5 +149,5 @@ namespace StaffingPortalBackend.Services
 
             return salaryReview;
         }
-    }    
+    }
 }

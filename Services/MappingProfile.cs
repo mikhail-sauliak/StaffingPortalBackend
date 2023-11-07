@@ -42,6 +42,11 @@ namespace StaffingPortalBackend.Services
                 .ForMember(
                     dest => dest.ReviewDate,
                     opt => opt.MapFrom(src => src.Person.SalaryReviews.FirstOrDefault().ReviewDate));
+
+            CreateMap<PersonCreateDto, Person>();
+            CreateMap<Person, PersonAdminDto>()
+                .ForMember(dest => dest.FullName, opt => opt.MapFrom(src => src.FirstName + " " + src.LastName));
+            CreateMap<PersonUpdateDto, Person>();
         }
     }
 }

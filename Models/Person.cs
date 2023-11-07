@@ -13,7 +13,7 @@ namespace StaffingPortalBackend.Models
         public DateTimeOffset AvailableFrom { get; set; }
         public string? Comments { get; set; }
         public string TechStack { get; set; }
-        public ICollection<ProjectCandidate>? ProjectCandidates { get; set; } 
+        public ICollection<ProjectCandidate>? ProjectCandidates { get; set; }
         public string Stream { get; set; } // QA, SDET
         public string TMAware { get; set; } // Not, Notified, Approves
         public string? PlannedAssignment { get; set; } // Project name and Start Date
@@ -23,7 +23,7 @@ namespace StaffingPortalBackend.Models
         public User User { get; set; }
         public ICollection<SalaryReview> SalaryReviews { get; set; }
         public int? DivisionManagerId { get; set; }
-        public Person DivisionManager { get; set; }        
+        public Person DivisionManager { get; set; }
         public int? TalentManagerId { get; set; }
         public Person TalentManager { get; set; }
         // For DivisionManager

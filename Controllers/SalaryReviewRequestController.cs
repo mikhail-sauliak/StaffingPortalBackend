@@ -37,7 +37,7 @@ namespace StaffingPortalBackend.Controllers
             var userId = int.Parse(User.FindFirst(ClaimTypes.Name)?.Value ?? "0");
             var userRole = User.FindFirst(ClaimTypes.Role)?.Value;
             var userStream = User.FindFirst("Stream")?.Value;
-            
+
             var user = await _context.Users.FindAsync(userId);
             if (!_authHelper.CanUserAccessSalaryReviewPage(user))
             {

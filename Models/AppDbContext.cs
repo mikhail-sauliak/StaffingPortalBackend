@@ -27,14 +27,14 @@ namespace StaffingPortalBackend.Models
             // For DivisionManager
             modelBuilder.Entity<Person>()
                 .HasOne(p => p.DivisionManager)
-                .WithMany(dm => dm.ManagedPersonsAsDivisionManager ) // Added navigation property
+                .WithMany(dm => dm.ManagedPersonsAsDivisionManager) // Added navigation property
                 .HasForeignKey(p => p.DivisionManagerId)
                 .OnDelete(DeleteBehavior.NoAction);
 
             // For TalentManager
             modelBuilder.Entity<Person>()
                 .HasOne(p => p.TalentManager)
-                .WithMany(tm => tm.ManagedPersonsAsTalentManager ) // Added navigation property
+                .WithMany(tm => tm.ManagedPersonsAsTalentManager) // Added navigation property
                 .HasForeignKey(p => p.TalentManagerId)
                 .OnDelete(DeleteBehavior.NoAction);
 
@@ -79,7 +79,7 @@ namespace StaffingPortalBackend.Models
             modelBuilder.Entity<Person>()
                 .Property(p => p.Level)
                 .HasColumnType("TEXT");
-            
+
             // Connection between SalaryReviewHistory and SalaryReview
             modelBuilder.Entity<SalaryReviewHistory>()
                 .HasOne(srh => srh.SalaryReview)

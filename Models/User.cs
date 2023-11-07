@@ -13,7 +13,7 @@ namespace StaffingPortalBackend.Models
         public string Role { get; set; } // Head, DeputyHead, DivisionManager, TalentManager
         public int? PersonId { get; set; } // Link to the Person if the user is a TalentManager or DivisionManager
         public Person Person { get; set; }
-        public string Stream{ get; set; }
+        public string Stream { get; set; }
         public ICollection<User> ManagedUsers { get; set; }
     }
 }

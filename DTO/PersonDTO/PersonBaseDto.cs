@@ -17,11 +17,9 @@ namespace StaffingPortalBackend.DTO
         public string Location { get; set; }
 
         [Required]
-        [MaxLength(4)]
         public int? DivisionManagerId { get; set; }
 
         [Required]
-        [MaxLength(4)]
         public int? TalentManagerId { get; set; }
 
         [Required]

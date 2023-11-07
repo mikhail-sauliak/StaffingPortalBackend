@@ -77,7 +77,7 @@ namespace StaffingPortalBackend.Controllers
 
             return Ok(_mapper.Map<UserReadDto>(user));
         }
-        
+
         [HttpPost("create")]
         public async Task<ActionResult<UserReadDto>> CreateUser(UserCreateDto userDto)
         {
