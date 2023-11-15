@@ -26,6 +26,13 @@ namespace StaffingPortalBackend.Models
         public Person DivisionManager { get; set; }
         public int? TalentManagerId { get; set; }
         public Person TalentManager { get; set; }
+        public int? HeadId { get; set; }
+        public Person Head { get; set; }
+        public ICollection<Person> ManagedPersonsAsHead { get; set; }
+
+        public int? DeputyHeadId { get; set; }
+        public Person DeputyHead { get; set; }
+        public ICollection<Person> ManagedPersonsAsDeputyHead { get; set; }
         // For DivisionManager
         public List<Person> ManagedPersonsAsDivisionManager { get; set; }
         // For TalentManager

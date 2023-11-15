@@ -40,11 +40,11 @@ namespace StaffingPortalBackend.Services
         {
             var salaryReviews = await _context.SalaryReviews
                 .Where(sr => sr.PersonId == personId)
-                .ToListAsync();  // асинхронное получение результатов запроса
+                .ToListAsync();
 
             var previousSalaryReview = salaryReviews
                 .OrderByDescending(sr => sr.ReviewDate.DateTime)
-                .FirstOrDefault();  // синхронная сортировка и выборка на стороне клиента
+                .FirstOrDefault(); 
 
             if (previousSalaryReview != null)
             {

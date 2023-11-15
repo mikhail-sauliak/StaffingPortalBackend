@@ -10,5 +10,6 @@ namespace StaffingPortalBackend.Services
         Task<PersonReadDto> CreatePerson(Person person);
         Task UpdatePerson(PersonUpdateDto personDto);
         Task DeletePerson(int id);
+        Task<IEnumerable<PersonReadDto>> GetAllActivePersons();
     }
 }

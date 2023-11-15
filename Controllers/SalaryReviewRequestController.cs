@@ -41,7 +41,7 @@ namespace StaffingPortalBackend.Controllers
             var user = await _context.Users.FindAsync(userId);
             if (!_authHelper.CanUserAccessSalaryReviewPage(user))
             {
-                return Unauthorized();
+                return Forbid();
             }
 
             var requestsWithReviews = await _service.GetPendingRequests(userId);

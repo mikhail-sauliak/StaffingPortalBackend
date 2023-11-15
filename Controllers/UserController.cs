@@ -120,15 +120,42 @@ namespace StaffingPortalBackend.Controllers
 
             if (!_authorizationHelper.CanUserAccessData(currentUser, id))
                 return Forbid();
-
-            // Проверка на наличие связанных записей
-            // if (_userService.HasRelatedRecords(user.Id))
-            // {
-            //     return BadRequest("Ошибка: Невозможно удалить пользователя, так как на него ссылаются другие записи.");
-            // }
-
             await _userService.DeleteUser(id);
             return NoContent();
+        }
+
+        [HttpGet("division-managers/{divisionManagerId}/talent-managers")]
+        public async Task<ActionResult<IEnumerable<UserReadDto>>> GetTalentManagersByDivisionManager(int divisionManagerId)
+        {
+            var currentUserId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? "0");
+            var currentUserRole = User.FindFirst(ClaimTypes.Role)?.Value;
+            var currentUserStream = User.FindFirst("Stream")?.Value;
+
+            var currentUser = new User
+            {
+                Id = currentUserId,
+                Role = currentUserRole,
+                Stream = currentUserStream
+            };
+
+            if (!_authorizationHelper.CanUserAccessData(currentUser, divisionManagerId))
+            {
+                return Forbid();
+            }
+
+            var talentManagers = await _userService.GetTalentManagersByDivisionManager(divisionManagerId);
+            if (talentManagers == null || !talentManagers.Any())
+            {
+                var divisionManager = await _userService.GetUserById(divisionManagerId);
+                if (divisionManager == null)
+                {
+                    return NotFound(new { Message = "Division Manager not found." });
+                }
+                
+                return Accepted (new { Message = "No Talent Managers found. Returning Division Manager.", DivisionManager = divisionManager });
+            }
+
+            return Ok(talentManagers);
         }
     }
 }

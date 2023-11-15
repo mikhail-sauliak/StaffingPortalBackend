@@ -22,6 +22,12 @@ namespace StaffingPortalBackend.Services
             return _mapper.Map<IEnumerable<PersonReadDto>>(persons);
         }
 
+        public async Task<IEnumerable<PersonReadDto>> GetAllActivePersons()
+        {
+            var persons = await _context.People.Where(p => !p.IsDismissed).ToListAsync();
+            return _mapper.Map<IEnumerable<PersonReadDto>>(persons);
+        }
+
         public async Task<PersonReadDto> GetPersonById(int id)
         {
             var person = await _context.People.FindAsync(id);
@@ -37,7 +43,7 @@ namespace StaffingPortalBackend.Services
 
         public async Task UpdatePerson(PersonUpdateDto personDto)
         {
-            var person = await _context.People.FindAsync(personDto.UserId);
+            var person = await _context.People.FindAsync(personDto.Id);
             _mapper.Map(personDto, person);
             await _context.SaveChangesAsync();
         }
@@ -48,10 +54,5 @@ namespace StaffingPortalBackend.Services
             person.IsDismissed = true;
             await _context.SaveChangesAsync();
         }
-
-        // public bool HasRelatedRecords(int personId)
-        // {
-        //     return _context.Users.Any(u => u.ManagerId == personId);
-        // }
     }
 }

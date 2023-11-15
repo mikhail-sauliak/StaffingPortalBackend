@@ -26,7 +26,7 @@ namespace StaffingPortalBackend.Controllers
         {
             try
             {
-                var persons = await _personService.GetAllPersons();
+                var persons = await _personService.GetAllActivePersons();
                 return Ok(persons);
             }
             catch (Exception ex)

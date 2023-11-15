@@ -105,7 +105,6 @@ namespace StaffingPortalBackend.Services
 
         public async Task<SalaryReview> UpdateFields(int id, UpdateFieldsDto updateFieldsDto)
         {
-            // Находим запрос на пересмотр зарплаты по id
             var salaryReview = await _context.SalaryReviews.FindAsync(id);
 
             if (salaryReview == null)
@@ -113,7 +112,6 @@ namespace StaffingPortalBackend.Services
                 throw new InvalidOperationException("Salary Review not found");
             }
 
-            // Обновляем поля запроса на пересмотр зарплаты
             salaryReview.ProposedSalary = updateFieldsDto.ProposedSalary;
             salaryReview.Currency = updateFieldsDto.Currency;
             salaryReview.ContractType = updateFieldsDto.ContractType;
@@ -126,14 +124,12 @@ namespace StaffingPortalBackend.Services
                 salaryReview.IsApproved = updateFieldsDto.IsApproved.Value;
             }
 
-            // Сохраняем изменения в базе данных
             await _context.SaveChangesAsync();
 
             return salaryReview;
         }
         public async Task<SalaryReview> ApproveByDM(int id)
         {
-            // Находим запрос на пересмотр зарплаты по id
             var salaryReview = await _context.SalaryReviews.FindAsync(id);
 
             if (salaryReview == null)
@@ -141,10 +137,8 @@ namespace StaffingPortalBackend.Services
                 throw new InvalidOperationException("Salary Review not found");
             }
 
-            // Обновляем поле ApprovedByDM запроса на пересмотр зарплаты
             salaryReview.ApprovedByDM = true;
 
-            // Сохраняем изменения в базе данных
             await _context.SaveChangesAsync();
 
             return salaryReview;

@@ -4,6 +4,7 @@ namespace StaffingPortalBackend.DTO
 {
     public class PersonBaseDto
     {
+        public int Id { get; set; }
         [Required]
         [MaxLength(100)]
         public string FirstName { get; set; }
@@ -43,9 +44,13 @@ namespace StaffingPortalBackend.DTO
         [Required]
         [MaxLength(20)]
         public string Level { get; set; }
-
+        public bool IsDismissed { get; set; }
         [Required]
         public bool AssignmentExistsInGCP { get; set; }
         public int? UserId { get; set; }
+        public int? HeadId { get; set; }
+        public string? HeadName { get; set; }
+        public int? DeputyHeadId { get; set; }
+        public string? DeputyHeadName { get; set; }
     }
 }

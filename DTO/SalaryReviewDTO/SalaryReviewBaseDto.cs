@@ -18,10 +18,10 @@ namespace StaffingPortalBackend.DTO
         public string ReviewResult { get; set; }
 
         [Required]
-        public decimal OldSalary { get; set; }  // Убран атрибут Column
+        public decimal OldSalary { get; set; } 
 
         [Required]
-        public decimal ProposedSalary { get; set; }  // Убран атрибут Column
+        public decimal ProposedSalary { get; set; }
 
         [Required]
         public bool IsApproved { get; set; }

@@ -27,16 +27,34 @@ namespace StaffingPortalBackend.Models
             // For DivisionManager
             modelBuilder.Entity<Person>()
                 .HasOne(p => p.DivisionManager)
-                .WithMany(dm => dm.ManagedPersonsAsDivisionManager) // Added navigation property
+                .WithMany(dm => dm.ManagedPersonsAsDivisionManager)
                 .HasForeignKey(p => p.DivisionManagerId)
-                .OnDelete(DeleteBehavior.NoAction);
+                .IsRequired(false) 
+                .OnDelete(DeleteBehavior.Restrict); 
 
             // For TalentManager
             modelBuilder.Entity<Person>()
                 .HasOne(p => p.TalentManager)
-                .WithMany(tm => tm.ManagedPersonsAsTalentManager) // Added navigation property
+                .WithMany(tm => tm.ManagedPersonsAsTalentManager)
                 .HasForeignKey(p => p.TalentManagerId)
-                .OnDelete(DeleteBehavior.NoAction);
+                .IsRequired(false)
+                .OnDelete(DeleteBehavior.Restrict); 
+
+            // For Head
+            modelBuilder.Entity<Person>()
+                .HasOne(p => p.Head)
+                .WithMany(h => h.ManagedPersonsAsHead)
+                .HasForeignKey(p => p.HeadId)
+                .IsRequired(false) 
+                .OnDelete(DeleteBehavior.Restrict);
+            
+            // For DeputyHead
+            modelBuilder.Entity<Person>()
+                .HasOne(p => p.DeputyHead)
+                .WithMany(dh => dh.ManagedPersonsAsDeputyHead)
+                .HasForeignKey(p => p.DeputyHeadId)
+                .IsRequired(false)
+                .OnDelete(DeleteBehavior.Restrict);
 
             // Connection between Person and SalaryReview
             modelBuilder.Entity<SalaryReview>()
@@ -92,7 +110,16 @@ namespace StaffingPortalBackend.Models
                 .HasOne(srh => srh.Person)
                 .WithMany() // Assuming there's no navigation property on Person for history records
                 .HasForeignKey(srh => srh.PersonId)
-                .OnDelete(DeleteBehavior.NoAction);  // Prevent cascade delete, adjust based on your requirements
+                .OnDelete(DeleteBehavior.NoAction);  
+
+            modelBuilder.Entity<ManagementHierarchy>()
+                .HasKey(mh => mh.Id);
+
+            modelBuilder.Entity<ManagementHierarchy>()
+                .HasMany(mh => mh.Subordinates)
+                .WithOne() 
+                .HasForeignKey(mh => mh.ManagerId)
+                .OnDelete(DeleteBehavior.NoAction);
         }
 
         public DbSet<Project> Projects { get; set; }
@@ -102,5 +129,6 @@ namespace StaffingPortalBackend.Models
         public DbSet<User> Users { get; set; }
         public DbSet<SalaryReviewHistory> SalaryReviewHistories { get; set; }  // DbSet for SalaryReviewHistory
         public DbSet<SalaryReviewRequest> SalaryReviewRequests { get; set; }
+        public DbSet<ManagementHierarchy> ManagementHierarchies { get; set; }
     }
 }

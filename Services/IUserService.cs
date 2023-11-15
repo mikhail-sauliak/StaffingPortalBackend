@@ -15,5 +15,6 @@ namespace StaffingPortalBackend.Services
         string HashPassword(string password, byte[] salt);
         bool VerifyPassword(string enteredPassword, string storedHash, byte[] storedSalt);
         Task ChangePassword(int userId, string oldPassword, string newPassword);
+        Task<IEnumerable<Person>> GetTalentManagersByDivisionManager(int divisionManagerId);
     }
 }

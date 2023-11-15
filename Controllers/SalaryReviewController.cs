@@ -161,6 +161,19 @@ namespace StaffingPortalBackend.Controllers
         [HttpGet("history/{personId}")]
         public async Task<ActionResult<IEnumerable<SalaryReviewHistoryReadDto>>> GetSalaryReviewHistoryByPersonId(int personId)
         {
+            var userId = int.Parse(User.FindFirst(ClaimTypes.Name)?.Value ?? "0");
+            var userRole = User.FindFirst(ClaimTypes.Role)?.Value;
+            var userStream = User.FindFirst("Stream")?.Value;
+
+            var currentUser = new User
+            {
+                Id = userId,
+                Role = userRole,
+                Stream = userStream
+            };
+            if (!_authorizationHelper.CanUserAccessData(currentUser, personId))
+                return Forbid();
+
             var history = await _salaryReviewHistoryService.GetSalaryReviewHistoryByPersonId(personId);
             return Ok(history);
         }

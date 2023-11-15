@@ -96,11 +96,6 @@ namespace StaffingPortalBackend.Services
                 if (!VerifyPassword(password, Convert.ToBase64String(userFromDb.PasswordHash), userFromDb.PasswordSalt))
                     return null;
 
-                // if (userFromDb.ManagerId == null)
-                // {
-                //     userFromDb.ManagerId = 0; // или любое другое значение по умолчанию
-                // }
-
                 return userFromDb;
             }
             catch (Exception ex)
@@ -124,6 +119,16 @@ namespace StaffingPortalBackend.Services
             user.PasswordSalt = newSalt;
             user.PasswordHash = Convert.FromBase64String(newHash);
             await _context.SaveChangesAsync();
+        }
+
+        public async Task<IEnumerable<Person>> GetTalentManagersByDivisionManager(int divisionManagerId)
+        {
+            var talentManagers = await _context.People
+                .Include(p => p.User) 
+                .Where(p => p.TalentManagerId == divisionManagerId && p.User.Role == "TalentManager")
+                .ToListAsync();
+
+            return talentManagers; 
         }
     }
 }
