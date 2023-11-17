@@ -3,9 +3,6 @@ using Microsoft.EntityFrameworkCore;
 using StaffingPortalBackend.Models;
 using StaffingPortalBackend.DTO;
 using Microsoft.AspNetCore.Authorization;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace StaffingPortalBackend.Controllers
 {
@@ -102,7 +99,7 @@ namespace StaffingPortalBackend.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<ProjectReadDto>> CreateProject([FromForm] ProjectCreateDto projectCreateDto)
+        public async Task<ActionResult<ProjectReadDto>> CreateProject([FromBody] ProjectCreateDto projectCreateDto)
         {
             if (projectCreateDto == null)
             {
@@ -123,7 +120,7 @@ namespace StaffingPortalBackend.Controllers
                 Stream = projectCreateDto.Stream,
                 Level = projectCreateDto.Level,
                 Priority = projectCreateDto.Priority,
-                Attachment = projectCreateDto.Attachment
+                Attachment = projectCreateDto.Attachment ?? "default_attachment_value",
             };
 
             _context.Projects.Add(project);
@@ -181,7 +178,7 @@ namespace StaffingPortalBackend.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateProject(int id, [FromForm] ProjectUpdateDto projectUpdateDto)
+        public async Task<IActionResult> UpdateProject(int id, [FromBody] ProjectUpdateDto projectUpdateDto)
         {
             if (projectUpdateDto == null)
             {

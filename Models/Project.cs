@@ -20,6 +20,6 @@ namespace StaffingPortalBackend.Models
         public string Stream { get; set; }
         public string Level { get; set; }
         public string Priority { get; set; }
-        public string Attachment { get; set; } // path to file or URL
+        public string? Attachment { get; set; } // path to file or URL
     }
 }
