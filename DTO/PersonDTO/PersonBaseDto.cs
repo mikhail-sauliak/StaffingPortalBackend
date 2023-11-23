@@ -24,7 +24,7 @@ namespace StaffingPortalBackend.DTO
         public int? TalentManagerId { get; set; }
 
         [Required]
-        public DateTimeOffset AvailableFrom { get; set; }
+        public DateTime AvailableFrom { get; set; }
 
         [Required]
         [MaxLength(100)]

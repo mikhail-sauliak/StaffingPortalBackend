@@ -98,6 +98,14 @@ namespace StaffingPortalBackend.Services
         public async Task<IEnumerable<UserReadDto>> GetTalentManagersByDivisionManagerAsync(int divisionManagerId)
         {
             Console.WriteLine($"divisionManagerId = {divisionManagerId} ");
+            // var divisionManager = await _context.Users.FindAsync(divisionManagerId);
+            // if (divisionManager != null && 
+            //     (divisionManager.Role == "Head" || divisionManager.Role == "DeputyHead" || divisionManager.Role == "DivisionManager"))
+            // {
+            //     // Возвращаем Head как талент менеджера
+            //     var head = await _context.Users.FirstOrDefaultAsync(u => u.Role == "Head");
+            //     return head != null ? new List<UserReadDto> { _mapper.Map<UserReadDto>(head) } : new List<UserReadDto>();
+            // }
             var talentManagersQuery = _context.Users
                 .Where(u => u.Role == "TalentManager")
                 .Join(_context.People,

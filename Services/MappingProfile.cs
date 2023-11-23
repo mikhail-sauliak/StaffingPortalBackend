@@ -101,21 +101,26 @@ namespace StaffingPortalBackend.Services
             CreateMap<SalaryReview, SalaryReviewHistory>()  // Mapping from SalaryReview to SalaryReviewHistory
                 .ForMember(dest => dest.SalaryReviewId, opt => opt.MapFrom(src => src.Id));
 
-            // Mapping between SalaryReviewRequest and SalaryReviewRequestDto
-            CreateMap<SalaryReviewRequest, SalaryReviewRequestDto>();
-            CreateMap<SalaryReviewRequest, SalaryReviewRequestDto>()
-                .ForMember(
-                    dest => dest.ContractType,
-                    opt => opt.MapFrom(src => src.Person.SalaryReviews.FirstOrDefault().ContractType))
-                .ForMember(
-                    dest => dest.Currency,
-                    opt => opt.MapFrom(src => src.Person.SalaryReviews.FirstOrDefault().Currency))
-                .ForMember(
-                    dest => dest.OldSalary,
-                    opt => opt.MapFrom(src => src.Person.SalaryReviews.FirstOrDefault().OldSalary))
-                .ForMember(
-                    dest => dest.ReviewDate,
-                    opt => opt.MapFrom(src => src.Person.SalaryReviews.FirstOrDefault().ReviewDate));
+            // Mapping from SalaryReviewRequest to SalaryReviewRequestDto
+            CreateMap<SalaryReviewRequest, SalaryReviewRequestDto>() 
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
+                .ForMember(dest => dest.PersonId, opt => opt.MapFrom(src => src.PersonId))
+                .ForMember(dest => dest.ReviewDate, opt => opt.MapFrom(src => src.ReviewDate))
+                .ForMember(dest => dest.Justification, opt => opt.MapFrom(src => src.Justification))
+                .ForMember(dest => dest.NewSalaryStartDate, opt => opt.MapFrom(src => src.NewSalaryStartDate))
+                .ForMember(dest => dest.SalaryReceivedDate, opt => opt.MapFrom(src => src.SalaryReceivedDate))
+                .ForMember(dest => dest.TalentManagerComments, opt => opt.MapFrom(src => src.TalentManagerComments));
+
+            // Mapping from SalaryReviewRequestDto to SalaryReviewRequest
+            CreateMap<SalaryReviewRequestDto, SalaryReviewRequest>()
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
+                .ForMember(dest => dest.PersonId, opt => opt.MapFrom(src => src.PersonId))
+                .ForMember(dest => dest.Justification, opt => opt.MapFrom(src => src.Justification))
+                .ForMember(dest => dest.NewSalaryStartDate, opt => opt.MapFrom(src => src.NewSalaryStartDate))
+                .ForMember(dest => dest.SalaryReceivedDate, opt => opt.MapFrom(src => src.SalaryReceivedDate))
+                .ForMember(dest => dest.TalentManagerComments, opt => opt.MapFrom(src => src.TalentManagerComments))
+                .ForMember(dest => dest.DivisionManagerComments, opt => opt.Ignore())
+                .ForMember(dest => dest.Status, opt => opt.Ignore());
 
             CreateMap<PersonCreateDto, Person>();
             CreateMap<PersonUpdateDto, Person>();

@@ -8,7 +8,7 @@ namespace StaffingPortalBackend.DTO
         public int PersonId { get; set; }
 
         [Required]
-        public DateTimeOffset ReviewDate { get; set; }
+        public DateTime ReviewDate { get; set; }
 
         [MaxLength(500)]
         public string Justification { get; set; }
@@ -34,9 +34,9 @@ namespace StaffingPortalBackend.DTO
         [MaxLength(10)]
         public string ContractType { get; set; }
 
-        public DateTimeOffset? NewSalaryStartDate { get; set; }
+        public DateTime? NewSalaryStartDate { get; set; }
 
-        public DateTimeOffset? SalaryReceivedDate { get; set; }
+        public DateTime? SalaryReceivedDate { get; set; }
 
         [MaxLength(500)]
         public string DivisionManagerComments { get; set; }

@@ -7,7 +7,7 @@ namespace StaffingPortalBackend.Services
     {
         Task<SalaryReviewRequest> CreateReviewRequest(SalaryReviewRequestDto requestDto);
         Task<IEnumerable<SalaryReviewRequest>> GetPendingRequests(int userId);
-        Task<SalaryReviewRequest> ApproveRequest(int requestId, string managerComments);
+        Task<SalaryReviewRequestDto> ApproveRequest(int requestId, SalaryReviewRequestDto requestDto);
         Task<SalaryReviewRequest> DeclineRequest(int requestId, string managerComments);
         Task<SalaryReviewRequest> GetReviewRequest(int requestId);
         Task<IEnumerable<SalaryReviewRequestDto>> GetRequestsWithReviews();

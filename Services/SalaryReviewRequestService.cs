@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using AutoMapper;
 using StaffingPortalBackend.DTO;
 using StaffingPortalBackend.Models;
+using System.Globalization;
 
 namespace StaffingPortalBackend.Services
 {
@@ -23,10 +24,15 @@ namespace StaffingPortalBackend.Services
             var request = new SalaryReviewRequest
             {
                 PersonId = requestDto.PersonId,
+                ReviewDate = DateTime.Now,
                 Justification = requestDto.Justification,
                 NewSalaryStartDate = requestDto.NewSalaryStartDate,
                 SalaryReceivedDate = requestDto.SalaryReceivedDate,
                 TalentManagerComments = requestDto.TalentManagerComments,
+                ContractType = requestDto.ContractType,
+                Currency = requestDto.Currency,
+                OldSalary = requestDto.OldSalary,
+                NewSalary = requestDto.NewSalary,
                 Status = "Pending"
             };
 
@@ -60,19 +66,61 @@ namespace StaffingPortalBackend.Services
             return await query.ToListAsync();
         }
 
-        public async Task<SalaryReviewRequest> ApproveRequest(int requestId, string managerComments)
+        public async Task<SalaryReviewRequestDto> ApproveRequest(int requestId, SalaryReviewRequestDto requestDto)
         {
-            var request = await _context.SalaryReviewRequests.FindAsync(requestId);
-            if (request != null)
+            Console.WriteLine($"Service: Starting to approve request with ID: {requestId}");
+            try
             {
-                request.Status = "Approved";
-                request.DivisionManagerComments = managerComments;
-                await _salaryReviewHistoryService.ArchivePreviousSalaryReview(request.PersonId);
-                await _context.SaveChangesAsync();
-            }
+                var request = await _context.SalaryReviewRequests
+                    .Include(r => r.Person)
+                    .ThenInclude(p => p.SalaryReviews)
+                    .FirstOrDefaultAsync(r => r.Id == requestId);
 
-            return request;
+                if (request == null)
+                {
+                    throw new KeyNotFoundException("Review request not found.");
+                }
+
+                request.Status = "Approved";
+                request.DivisionManagerComments = requestDto.DivisionManagerComments;                
+
+                var isArchived = await _salaryReviewHistoryService.ArchivePreviousSalaryReview(request.PersonId);
+                if (!isArchived)
+                {
+                    throw new InvalidOperationException("Failed to archive previous salary review.");
+                }               
+
+                    var newSalaryReview = new SalaryReview
+                    {
+                        PersonId = request.PersonId,
+                        ReviewDate = requestDto.ReviewDate,
+                        Justification = requestDto.Justification,
+                        OldSalary = requestDto.OldSalary,
+                        ProposedSalary = requestDto.NewSalary,
+                        Currency = requestDto.Currency,
+                        ContractType = requestDto.ContractType,
+                        NewSalaryStartDate = requestDto.NewSalaryStartDate,
+                        SalaryReceivedDate = requestDto.SalaryReceivedDate,
+                        DivisionManagerComments = requestDto.DivisionManagerComments,
+                        TalentManagerComments = requestDto.TalentManagerComments,
+                        IsApproved = true,
+                        ApprovedByDM = true,
+                        ReviewResult = "Approved"
+                    };
+
+                _context.SalaryReviews.Add(newSalaryReview);
+                await _context.SaveChangesAsync();
+                Console.WriteLine($"Salary Review Request Approved: {requestId}");
+
+                return _mapper.Map<SalaryReviewRequestDto>(request);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error in ApproveRequest: {ex.Message}");
+                throw;
+            }
         }
+
 
         public async Task<SalaryReviewRequest> DeclineRequest(int requestId, string managerComments)
         {

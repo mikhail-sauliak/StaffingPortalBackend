@@ -36,20 +36,50 @@ namespace StaffingPortalBackend.Services
             }
         }
 
-        public async Task ArchivePreviousSalaryReview(int personId)
+        public async Task<bool> ArchivePreviousSalaryReview(int personId)
         {
-            var salaryReviews = await _context.SalaryReviews
-                .Where(sr => sr.PersonId == personId)
-                .ToListAsync();
-
-            var previousSalaryReview = salaryReviews
-                .OrderByDescending(sr => sr.ReviewDate.DateTime)
-                .FirstOrDefault(); 
-
-            if (previousSalaryReview != null)
+            try
             {
-                await ArchiveSalaryReview(previousSalaryReview.Id);
+                var salaryReviews = await _context.SalaryReviews
+                    .Where(sr => sr.PersonId == personId)
+                    .ToListAsync();
+
+                var previousSalaryReview = salaryReviews
+                    .OrderByDescending(sr => sr.ReviewDate.Date)
+                    .FirstOrDefault();
+
+                if (previousSalaryReview != null)
+                {
+                    var historyRecord = _mapper.Map<SalaryReviewHistory>(previousSalaryReview);
+                    if (historyRecord == null)
+                    {
+                        Console.WriteLine("Mapping to SalaryReviewHistory resulted in a null object.");
+                        return false;
+                    }
+
+                    _context.SalaryReviewHistories.Add(historyRecord);
+                    await _context.SaveChangesAsync();
+
+                    Console.WriteLine($"Archived Salary Review with HistoryId: {historyRecord.HistoryId}");
+
+                    _context.SalaryReviews.Remove(previousSalaryReview);
+                    await _context.SaveChangesAsync();
+                }
+                else
+                {
+                    Console.WriteLine("No existing salary review found for archiving.");
+                    return false;
+                }
             }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error in ArchivePreviousSalaryReview: {ex.Message}");
+                return false;
+            }
+
+            return true;
         }
+
+
     }
 }

@@ -10,7 +10,7 @@ namespace StaffingPortalBackend.Models
         public string LastName { get; set; }
         public string Location { get; set; }
         public bool IsDismissed { get; set; } = false;
-        public DateTimeOffset AvailableFrom { get; set; }
+        public DateTime AvailableFrom { get; set; }
         public string? Comments { get; set; }
         public string TechStack { get; set; }
         public ICollection<ProjectCandidate>? ProjectCandidates { get; set; }

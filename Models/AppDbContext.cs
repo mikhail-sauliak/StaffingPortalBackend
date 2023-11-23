@@ -98,19 +98,12 @@ namespace StaffingPortalBackend.Models
                 .Property(p => p.Level)
                 .HasColumnType("TEXT");
 
-            // Connection between SalaryReviewHistory and SalaryReview
-            modelBuilder.Entity<SalaryReviewHistory>()
-                .HasOne(srh => srh.SalaryReview)
-                .WithMany() // Assuming there's no navigation property on SalaryReview for history records
-                .HasForeignKey(srh => srh.SalaryReviewId)
-                .OnDelete(DeleteBehavior.NoAction);  // Prevent cascade delete, adjust based on your requirements
-
             // Connection between SalaryReviewHistory and Person
             modelBuilder.Entity<SalaryReviewHistory>()
                 .HasOne(srh => srh.Person)
                 .WithMany() // Assuming there's no navigation property on Person for history records
                 .HasForeignKey(srh => srh.PersonId)
-                .OnDelete(DeleteBehavior.NoAction);  
+                .OnDelete(DeleteBehavior.SetNull);  
 
             modelBuilder.Entity<ManagementHierarchy>()
                 .HasKey(mh => mh.Id);

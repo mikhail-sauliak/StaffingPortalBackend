@@ -171,10 +171,21 @@ namespace StaffingPortalBackend.Controllers
                 Role = userRole,
                 Stream = userStream
             };
+
             if (!_authorizationHelper.CanUserAccessData(currentUser, personId))
+            {
+                Console.WriteLine("Access forbidden for user");
                 return Forbid();
+            }
 
             var history = await _salaryReviewHistoryService.GetSalaryReviewHistoryByPersonId(personId);
+
+            if (history == null || !history.Any())
+            {
+                Console.WriteLine("No history records found");
+                return NotFound();
+            }
+
             return Ok(history);
         }
     }

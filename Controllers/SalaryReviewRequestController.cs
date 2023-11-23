@@ -27,80 +27,120 @@ namespace StaffingPortalBackend.Controllers
         [HttpPost]
         public async Task<ActionResult<SalaryReviewRequest>> CreateReviewRequest(SalaryReviewRequestDto requestDto)
         {
-            var request = await _service.CreateReviewRequest(requestDto);
-            return CreatedAtAction(nameof(GetReviewRequest), new { id = request.Id }, request);
+            try
+            {
+                var request = await _service.CreateReviewRequest(requestDto);
+                return CreatedAtAction(nameof(GetReviewRequest), new { id = request.Id }, request);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Internal Server Error: " + ex.Message);
+            }
         }
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<SalaryReviewRequestDto>>> GetPendingRequests()
         {
-            var userId = int.Parse(User.FindFirst(ClaimTypes.Name)?.Value ?? "0");
-            var userRole = User.FindFirst(ClaimTypes.Role)?.Value;
-            var userStream = User.FindFirst("Stream")?.Value;
-
-            var user = await _context.Users.FindAsync(userId);
-            if (!_authHelper.CanUserAccessSalaryReviewPage(user))
+            try
             {
-                return Forbid();
+                var userId = int.Parse(User.FindFirst(ClaimTypes.Name)?.Value ?? "0");
+                var requestsWithReviews = await _service.GetPendingRequests(userId);
+                return Ok(requestsWithReviews);
             }
-
-            var requestsWithReviews = await _service.GetPendingRequests(userId);
-            return Ok(requestsWithReviews);
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Error fetching pending requests: " + ex.Message);
+            }
         }
 
         [HttpPatch("{id}/approve")]
-        public async Task<ActionResult<SalaryReviewRequest>> ApproveRequest(int id, [FromBody] ManagerCommentsDto managerCommentsDto)
+        public async Task<ActionResult<SalaryReviewRequest>> ApproveRequest(int id, [FromBody] SalaryReviewRequestDto requestDto)
         {
-            var request = await _service.ApproveRequest(id, managerCommentsDto.Comments);
-            if (request == null)
+            try
             {
-                return NotFound();
+                var request = await _service.ApproveRequest(id, requestDto);
+                if (request == null)
+                {
+                    return NotFound("Salary review request not found.");
+                }
+                return Ok(request);
             }
-            return Ok(request);
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Error approving request: " + ex.Message);
+            }
         }
 
         [HttpPatch("{id}/decline")]
         public async Task<ActionResult<SalaryReviewRequest>> DeclineRequest(int id, [FromBody] ManagerCommentsDto managerCommentsDto)
         {
-            var request = await _service.DeclineRequest(id, managerCommentsDto.Comments);
-            if (request == null)
+            try
             {
-                return NotFound();
+                var request = await _service.DeclineRequest(id, managerCommentsDto.Comments);
+                if (request == null)
+                {
+                    return NotFound("Salary review request not found.");
+                }
+                return Ok(request);
             }
-            return Ok(request);
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Error declining request: " + ex.Message);
+            }
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<SalaryReviewRequest>> GetReviewRequest(int id)
         {
-            var request = await _service.GetReviewRequest(id);
-            if (request == null)
+            try
             {
-                return NotFound();
+                var request = await _service.GetReviewRequest(id);
+                if (request == null)
+                {
+                    return NotFound("Review request not found.");
+                }
+                return Ok(request);
             }
-            return request;
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Error fetching review request: " + ex.Message);
+            }
         }
 
         [HttpPatch("{id}/updateFields")]
         public async Task<ActionResult<SalaryReviewRequest>> UpdateFields(int id, [FromBody] UpdateFieldsDto updateFieldsDto)
         {
-            var request = await _service.UpdateFields(id, updateFieldsDto);
-            if (request == null)
+            try
             {
-                return NotFound();
+                var request = await _service.UpdateFields(id, updateFieldsDto);
+                if (request == null)
+                {
+                    return NotFound("Update request not found.");
+                }
+                return Ok(request);
             }
-            return Ok(request);
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Error updating fields: " + ex.Message);
+            }
         }
 
         [HttpPatch("{id}/approveByDM")]
         public async Task<ActionResult<SalaryReviewRequest>> ApproveByDM(int id)
         {
-            var request = await _service.ApproveByDM(id);
-            if (request == null)
+            try
             {
-                return NotFound();
+                var request = await _service.ApproveByDM(id);
+                if (request == null)
+                {
+                    return NotFound("Request for approval by DM not found.");
+                }
+                return Ok(request);
             }
-            return Ok(request);
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Error approving by DM: " + ex.Message);
+            }
         }
     }
 }

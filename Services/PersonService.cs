@@ -44,7 +44,15 @@ namespace StaffingPortalBackend.Services
         public async Task UpdatePerson(PersonUpdateDto personDto)
         {
             var person = await _context.People.FindAsync(personDto.Id);
+            if (person == null)
+            {
+                throw new Exception("Person not found");
+            }
             _mapper.Map(personDto, person);
+            if (personDto.UserId.HasValue)
+            {
+                person.UserId = personDto.UserId.Value;
+            }
             await _context.SaveChangesAsync();
         }
 

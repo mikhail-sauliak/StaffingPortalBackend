@@ -6,6 +6,6 @@ namespace StaffingPortalBackend.Services
     {
         Task<IEnumerable<SalaryReviewHistoryReadDto>> GetSalaryReviewHistoryByPersonId(int personId);
         Task ArchiveSalaryReview(int salaryReviewId);
-        Task ArchivePreviousSalaryReview(int personId);
+        Task<bool> ArchivePreviousSalaryReview(int personId);
     }
 }

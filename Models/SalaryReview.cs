@@ -13,7 +13,7 @@ namespace StaffingPortalBackend.Models
         public int PersonId { get; set; }
         public Person Person { get; set; }
 
-        public DateTimeOffset ReviewDate { get; set; }
+        public DateTime ReviewDate { get; set; }
         public string Justification { get; set; }
         [Column(TypeName = "decimal(18,2)")]
         public decimal OldSalary { get; set; }
@@ -22,8 +22,8 @@ namespace StaffingPortalBackend.Models
         public bool IsApproved { get; set; }
         public string Currency { get; set; }
         public string ContractType { get; set; }
-        public DateTimeOffset? NewSalaryStartDate { get; set; }
-        public DateTimeOffset? SalaryReceivedDate { get; set; }
+        public DateTime? NewSalaryStartDate { get; set; }
+        public DateTime? SalaryReceivedDate { get; set; }
         public string DivisionManagerComments { get; set; }
         public string TalentManagerComments { get; set; }
         public string ReviewResult { get; set; }
