@@ -15,24 +15,24 @@ variables:
   buildConfiguration: 'Release'
 
 steps:
-- task: NuGetToolInstaller@1
+# - task: NuGetToolInstaller@1
 
-- task: DotNetCoreCLI@2
-  inputs:
-    command: 'restore'
-    projects: '$(System.DefaultWorkingDirectory)\StaffingPortalBackend.csproj'
-    feedsToUse: 'select'
+# - task: DotNetCoreCLI@2
+#   inputs:
+#     command: 'restore'
+#     projects: '$(System.DefaultWorkingDirectory)\StaffingPortalBackend.csproj'
+#     feedsToUse: 'select'
 
-- task: DotNetCoreCLI@2
-  inputs:
-    command: 'build'
-    projects: '$(System.DefaultWorkingDirectory)\StaffingPortalBackend.csproj'
+# - task: DotNetCoreCLI@2
+#   inputs:
+#     command: 'build'
+#     projects: '$(System.DefaultWorkingDirectory)\StaffingPortalBackend.csproj'
 
-- task: DotNetCoreCLI@2
-  inputs:
-    command: 'publish'
-    publishWebProjects: true
-    arguments: '-o $(System.DefaultWorkingDirectory)\publish'
+# - task: DotNetCoreCLI@2
+#   inputs:
+#     command: 'publish'
+#     publishWebProjects: true
+#     arguments: '-o $(System.DefaultWorkingDirectory)\publish'
 
 - task: CopyFiles@2
   inputs:
