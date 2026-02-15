@@ -1,0 +1,18 @@
+version: '3.9'
+services:
+  db:
+    image: postgres:16.2
+    environment:
+      POSTGRES_DB: staffingportaldb
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+    volumes:
+      - /mnt/d/net/Projects/StaffPortalAzure/StaffportalBackend/StaffingPortalBackend/pgdata:/var/lib/postgresql/data
+    ports:
+      - "6050:5432"
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080

@@ -1,0 +1,12 @@
+{
+  "Version": 1,
+  "Hash": "Wi8TBNKog21m9L7HfkLmbTHLvQ7H5u2KEz0hxvTKtnI=",
+  "Source": "StaffingPortalBackend",
+  "BasePath": "_content/StaffingPortalBackend",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": [],
+  "Endpoints": []
+}
