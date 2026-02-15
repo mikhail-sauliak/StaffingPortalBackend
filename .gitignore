@@ -1,3 +1,24 @@
-/bin/
-/obj/
-/Migrations/
+# Build artifacts
+**/bin/
+**/obj/
+
+# Test outputs
+**/TestResults/
+**/coverage/
+**/coverage.*
+
+# IDE/editor
+.vs/
+.vscode/
+
+# Runtime/local data
+StaffingPortalBackend/pgdata/
+StaffingPortalBackend/net6.0/
+*.db
+*.db-shm
+*.db-wal
+postmaster.pid
+
+# Logs and temp
+*.log
+*.tmp
